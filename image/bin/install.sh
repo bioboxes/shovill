@@ -13,13 +13,15 @@ fetch(){
 }
 
 
-NON_ESSENTIAL_BUILD="wget ca-certificates make g++ zlibc lbzip2"
-ESSENTIAL_BUILD="zlib1g-dev libevent-pthreads-2.0-5 libncurses5-dev"
+NON_ESSENTIAL_BUILD="wget ca-certificates make g++ zlibc lbzip2 unzip"
+ESSENTIAL_BUILD="zlib1g-dev libevent-pthreads-2.0-5 libncurses5-dev pigz"
 
 # Required dependencies
 SPADES="python-minimal python-setuptools"
 LIGHTER="zlib1g-dev libevent-pthreads-2.0-5"
 PILON="openjdk-7-jre-headless"
+KMERSTREAM="python-scipy"
+SHOVILL="perl datamash"
 
 
 # Build dependencies
@@ -70,7 +72,7 @@ wget https://github.com/broadinstitute/pilon/releases/download/v1.19/pilon-1.19.
 # kmerstream
 fetch https://github.com/pmelsted/KmerStream/archive/v1.1.tar.gz kmerstream
 cd /usr/local/kmerstream && make -j $(nproc)
-mv /usr/local/kmerstream/KmerStream /usr/local/bin
+mv /usr/local/kmerstream/{KmerStream,KmerStreamEstimate.py} /usr/local/bin
 rm -rf /usr/local/kmerstream
 
 
@@ -80,11 +82,21 @@ cd /usr/local/seqtk && make -j $(nproc)
 mv /usr/local/seqtk/seqtk /usr/local/bin
 rm -fr /usr/local/seqtk
 
+# Shovill
+cd /tmp
+wget \
+	--quiet \
+	--output-document temp.zip \
+	https://github.com/tseemann/shovill/archive/84e56564a20f9b7fe0d7f9077f43c02fde720bdd.zip
+unzip temp.zip
+mv shovill-*/shovill /usr/local/bin
+rm -r shovill-* temp.zip
+
 
 # Clean up dependencies
 apt-get autoremove --purge --yes ${NON_ESSENTIAL_BUILD}
 apt-get clean
 
 # Install required files
-apt-get install --yes --no-install-recommends ${ESSENTIAL_BUILD} ${SPADES} ${LIGHTER} ${PILON}
+apt-get install --yes --no-install-recommends ${ESSENTIAL_BUILD} ${SPADES} ${LIGHTER} ${PILON} ${SHOVILL} ${KMERSTREAM}
 rm -rf /var/lib/apt/lists/*

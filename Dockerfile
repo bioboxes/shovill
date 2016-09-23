@@ -4,3 +4,7 @@ ADD image/bin    /usr/local/bin
 ADD image/share  /usr/local/share
 
 RUN install.sh && rm /usr/local/bin/install.sh
+
+ENV TASKFILE     /usr/local/share/Taskfile
+ENV SCHEMA       /usr/local/share/assembler_schema.yaml
+ENV BIOBOX_EXEC  assemble.sh
