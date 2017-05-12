@@ -13,90 +13,52 @@ fetch(){
 }
 
 
-NON_ESSENTIAL_BUILD="wget ca-certificates make g++ zlibc lbzip2 unzip"
+NON_ESSENTIAL_BUILD="wget ca-certificates make g++ zlibc lbzip2 unzip openjdk-7-jdk"
+
+
 ESSENTIAL_BUILD="zlib1g-dev libevent-pthreads-2.0-5 libncurses5-dev pigz"
 
-# Required dependencies
+# Required dependencies for each tool
 SPADES="python-minimal python-setuptools"
 LIGHTER="zlib1g-dev libevent-pthreads-2.0-5"
-PILON="openjdk-7-jre-headless"
+PYLON_AND_TRIMMOMATIC="openjdk-7-jre-headless"
 KMERSTREAM="python-scipy"
-SHOVILL="perl datamash"
+SHOVILL="perl datamash libfile-slurp-perl"
 
 
 # Build dependencies
 apt-get update --yes
 apt-get install --yes --no-install-recommends ${NON_ESSENTIAL_BUILD} ${ESSENTIAL_BUILD}
 
+export PATH=$PATH:/usr/local/bin/install
 
-# spades
-fetch http://spades.bioinf.spbau.ru/release3.9.0/SPAdes-3.9.0-Linux.tar.gz spades
-ln -s /usr/local/spades/bin/* /usr/local/bin
-rm -rf /usr/local/spades/share/spades/test_dataset*
+# Install individual tools
+bwa.sh
+flash.sh
+kmc.sh
+kmerstream.sh
+lighter.sh
+pylon.sh
+samtools.sh
+seqtk.sh
+spades.sh
+trimmomatic.sh
 
-
-# lighter
-fetch https://github.com/mourisl/Lighter/archive/v1.1.1.tar.gz lighter
-cd /usr/local/lighter && make -j $(nproc)
-mv /usr/local/lighter/lighter /usr/local/bin
-rm -rf /usr/local/lighter
-
-
-# flash
-fetch http://downloads.sourceforge.net/project/flashpage/FLASH-1.2.11.tar.gz flash
-cd /usr/local/flash && make -j $(nproc)
-mv /usr/local/flash/flash /usr/local/bin
-rm -rf /usr/local/flash
-
-
-# samtools
-fetch https://github.com/samtools/samtools/releases/download/1.3.1/samtools-1.3.1.tar.bz2 samtools
-cd /usr/local/samtools && make -j $(nproc)
-mv /usr/local/samtools/samtools /usr/local/bin
-rm -rf /usr/local/samtools
-
-
-# bwa mem
-fetch http://downloads.sourceforge.net/project/bio-bwa/bwa-0.7.15.tar.bz2 bwa
-cd /usr/local/bwa && make -j $(nproc)
-mv /usr/local/bwa/bwa /usr/local/bin
-rm -rf /usr/local/bwa
-
-
-# pilon
-mkdir -p /usr/local/pylon
-wget https://github.com/broadinstitute/pilon/releases/download/v1.19/pilon-1.19.jar \
-	--output-document /usr/local/pylon/pylon.jar \
-	--quiet
-
-# kmerstream
-fetch https://github.com/pmelsted/KmerStream/archive/v1.1.tar.gz kmerstream
-cd /usr/local/kmerstream && make -j $(nproc)
-mv /usr/local/kmerstream/{KmerStream,KmerStreamEstimate.py} /usr/local/bin
-rm -rf /usr/local/kmerstream
-
-
-# seqtk
-fetch https://github.com/lh3/seqtk/archive/v1.2.tar.gz seqtk
-cd /usr/local/seqtk && make -j $(nproc)
-mv /usr/local/seqtk/seqtk /usr/local/bin
-rm -fr /usr/local/seqtk
-
-# Shovill
-cd /tmp
-wget \
-	--quiet \
-	--output-document temp.zip \
-	https://github.com/tseemann/shovill/archive/84e56564a20f9b7fe0d7f9077f43c02fde720bdd.zip
-unzip temp.zip
-mv shovill-*/shovill /usr/local/bin
-rm -r shovill-* temp.zip
-
+# Shovill requires trimmomatic be installed first
+shovill.sh
 
 # Clean up dependencies
 apt-get autoremove --purge --yes ${NON_ESSENTIAL_BUILD}
 apt-get clean
 
 # Install required files
-apt-get install --yes --no-install-recommends ${ESSENTIAL_BUILD} ${SPADES} ${LIGHTER} ${PILON} ${SHOVILL} ${KMERSTREAM}
+apt-get install --yes --no-install-recommends ${ESSENTIAL_BUILD} ${SPADES} ${LIGHTER} ${PYLON_AND_TRIMMOMATIC} ${SHOVILL} ${KMERSTREAM}
+
 rm -rf /var/lib/apt/lists/*
+
+# Remove all no-longer-required build artefacts
+EXTENSIONS=("pyc" "c" "cc" "cpp" "h" "o" "pdf")
+for EXT in "${EXTENSIONS[@]}"
+do
+	find /usr/local -name "*.$EXT" -delete
+done

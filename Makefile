@@ -1,5 +1,5 @@
 env    = PATH=./env/bin:${PATH}
-image  = biobox_testing/shovill
+image  = biobox_testing/spades
 
 ssh: .image env
 	@$(env) biobox login short_read_assembler $(image)

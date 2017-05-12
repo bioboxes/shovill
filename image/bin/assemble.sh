@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -o nounset
+set -o errexit
 set -o xtrace
 
 READ_1=$(mktemp --suffix=.fq.gz)
@@ -8,12 +9,13 @@ READ_2=$(mktemp --suffix=.fq.gz)
 
 INPUT=$(biobox_args.sh 'select(has("fastq")) | .fastq | map(.value) | .[0]')
 
+# Split FASTQ into different files
 zcat ${INPUT} \
 	| paste - - - - - - - - \
 	| tee >(cut -f 1-4 | tr "\t" "\n" | pigz --processes $(nproc) > ${READ_1}) \
 	| cut -f 5-8 | tr "\t" "\n" | pigz --best --processes $(nproc) > ${READ_2}
 
-TMP=$(mktemp -d)/outputs
+TMP=$(mktemp -d)
 
 shovill \
 	--outdir ${TMP} \
