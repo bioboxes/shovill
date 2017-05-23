@@ -22,7 +22,6 @@ ESSENTIAL_BUILD="zlib1g-dev libevent-pthreads-2.0-5 libncurses5-dev pigz"
 SPADES="python-minimal python-setuptools"
 LIGHTER="zlib1g-dev libevent-pthreads-2.0-5"
 PYLON_AND_TRIMMOMATIC="openjdk-7-jre-headless"
-KMERSTREAM="python-scipy"
 SHOVILL="perl datamash libfile-slurp-perl"
 
 
@@ -51,7 +50,7 @@ apt-get autoremove --purge --yes ${NON_ESSENTIAL_BUILD}
 apt-get clean
 
 # Install required files
-apt-get install --yes --no-install-recommends ${ESSENTIAL_BUILD} ${SPADES} ${LIGHTER} ${PYLON_AND_TRIMMOMATIC} ${SHOVILL} ${KMERSTREAM}
+apt-get install --yes --no-install-recommends ${ESSENTIAL_BUILD} ${SPADES} ${LIGHTER} ${PYLON_AND_TRIMMOMATIC} ${SHOVILL}
 
 rm -rf /var/lib/apt/lists/*
 
