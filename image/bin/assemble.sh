@@ -15,7 +15,7 @@ zcat ${INPUT} \
 	| tee >(cut -f 1-4 | tr "\t" "\n" | pigz --processes $(nproc) > ${READ_1}) \
 	| cut -f 5-8 | tr "\t" "\n" | pigz --best --processes $(nproc) > ${READ_2}
 
-TMP=$(mktemp -d)
+TMP=$(mktemp -d)/shovill
 
 shovill \
 	--outdir ${TMP} \
