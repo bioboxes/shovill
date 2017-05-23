@@ -36,7 +36,6 @@ export PATH=$PATH:/usr/local/bin/install
 bwa.sh
 flash.sh
 kmc.sh
-kmerstream.sh
 lighter.sh
 pylon.sh
 samtools.sh
