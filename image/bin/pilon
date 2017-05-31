@@ -10,4 +10,4 @@ MEM_IN_KB=$(grep MemTotal: /proc/meminfo | tr -s ' ' | cut -f 2 -d ' ')
 USAGE_PERCENT=75
 let HEAP_IN_KB=${MEM_IN_KB}*${USAGE_PERCENT}/100
 
-java -Xmx${HEAP_IN_KB}k -jar /usr/local/pylon/pylon.jar $*
+java -Xmx${HEAP_IN_KB}k -jar /usr/local/pylon/lib/pylon.jar $*
