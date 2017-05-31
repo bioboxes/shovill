@@ -17,12 +17,16 @@ zcat ${INPUT} \
 
 TMP=$(mktemp -d)/shovill
 
+RAM_AVAILABLE=$(grep MemTotal /proc/meminfo | awk '{print $2}' | xargs -I {} echo "scale=4; {}/1024^2 * 0.9" | bc)
+
+
 shovill \
 	--outdir ${TMP} \
+	--ram ${RAM_AVAILABLE} \
 	--R1 ${READ_1} \
 	--R2 ${READ_2}
 
-mv ${TMP}/corrected.fasta ${OUTPUT}/contigs.fa
+seqtk seq -l60 ${TMP}/contigs.fa > ${OUTPUT}/contigs.fa
 rm -rf ${READ_1} ${READ_2} ${TMP}
 
 cat << EOF > ${OUTPUT}/biobox.yaml

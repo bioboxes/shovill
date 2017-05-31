@@ -13,10 +13,24 @@ fetch(){
 }
 
 
-NON_ESSENTIAL_BUILD="wget ca-certificates make g++ zlibc lbzip2 unzip openjdk-7-jdk"
+NON_ESSENTIAL_BUILD="
+	ca-certificates
+	g++
+	lbzip2
+	make
+	openjdk-7-jdk
+	patch
+	unzip
+	wget
+	zlibc"
 
-
-ESSENTIAL_BUILD="zlib1g-dev libevent-pthreads-2.0-5 libncurses5-dev pigz"
+ESSENTIAL_BUILD="
+	bc
+	gawk
+	libevent-pthreads-2.0-5
+	libncurses5-dev
+	pigz
+	zlib1g-dev"
 
 # Required dependencies for each tool
 SPADES="python-minimal python-setuptools"
