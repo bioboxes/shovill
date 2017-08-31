@@ -21,8 +21,10 @@ RAM_AVAILABLE=$(grep MemTotal /proc/meminfo | awk '{print $2}' | xargs -I {} ech
 
 
 shovill \
+	--trim \
 	--outdir ${TMP} \
 	--ram ${RAM_AVAILABLE} \
+	--cpus $(nproc) \
 	--R1 ${READ_1} \
 	--R2 ${READ_2}
 
