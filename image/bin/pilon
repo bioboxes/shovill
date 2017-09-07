@@ -1,13 +1,6 @@
 #!/bin/bash
 
-# Dynamically set memory usage for java
-# http://stackoverflow.com/a/9906605/91144
-
 set -o nounset
 set -o xtrace
 
-MEM_IN_KB=$(grep MemTotal: /proc/meminfo | tr -s ' ' | cut -f 2 -d ' ')
-USAGE_PERCENT=75
-let HEAP_IN_KB=${MEM_IN_KB}*${USAGE_PERCENT}/100
-
-java -Xmx${HEAP_IN_KB}k -jar /usr/local/pylon/lib/pylon.jar $*
+java -jar /usr/local/pilon/lib/pilon.jar $*

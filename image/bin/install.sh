@@ -35,7 +35,7 @@ ESSENTIAL_BUILD="
 # Required dependencies for each tool
 SPADES="python-minimal python-setuptools"
 LIGHTER="zlib1g-dev libevent-pthreads-2.0-5"
-PYLON_AND_TRIMMOMATIC="openjdk-7-jre-headless"
+PILON_AND_TRIMMOMATIC="openjdk-7-jre-headless"
 SHOVILL="perl datamash libfile-slurp-perl"
 
 
@@ -50,7 +50,7 @@ bwa.sh
 flash.sh
 kmc.sh
 lighter.sh
-pylon.sh
+pilon.sh
 samtools.sh
 seqtk.sh
 spades.sh
@@ -64,7 +64,7 @@ apt-get autoremove --purge --yes ${NON_ESSENTIAL_BUILD}
 apt-get clean
 
 # Install required files
-apt-get install --yes --no-install-recommends ${ESSENTIAL_BUILD} ${SPADES} ${LIGHTER} ${PYLON_AND_TRIMMOMATIC} ${SHOVILL}
+apt-get install --yes --no-install-recommends ${ESSENTIAL_BUILD} ${SPADES} ${LIGHTER} ${PILON_AND_TRIMMOMATIC} ${SHOVILL}
 
 rm -rf /var/lib/apt/lists/*
 

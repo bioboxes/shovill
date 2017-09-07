@@ -17,12 +17,11 @@ zcat ${INPUT} \
 
 TMP=$(mktemp -d)/shovill
 
-RAM_AVAILABLE=$(grep MemTotal /proc/meminfo | awk '{print $2}' | xargs -I {} echo "scale=4; {}/1024^2 * 0.9" | bc)
-
-
 shovill \
+	--trim \
 	--outdir ${TMP} \
-	--ram ${RAM_AVAILABLE} \
+	--ram $(available_ram.py) \
+	--cpus $(nproc) \
 	--R1 ${READ_1} \
 	--R2 ${READ_2}
 
